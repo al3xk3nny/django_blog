@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Post
 from .forms import PostForm
 
@@ -14,11 +15,13 @@ def read_post(request, id):
     post = get_object_or_404(Post, pk=id)
     return render(request, "blog/read_post.html", {"post": post})
     
-
+@login_required
 def write_post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
-        p = form.save()
+        p = form.save(commit=False) # Save the form, but not to the server (i.e. "commit=False").
+        p.author = request.user # Request user.
+        p.save() # Save the form and the user to the database.
         
         return redirect(read_post, p.id)
     else:    
