@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve
+from django.conf import settings
+
 from blog.views import get_index, write_post, read_post, edit_post
 from accounts.views import signup
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,5 +31,7 @@ urlpatterns = [
     path("read_post/<int:id>/", read_post, name="read_post"),
     path("edit_post/<int:id>/", edit_post, name="edit_post"),
     
-    path('signup/', signup, name='signup'),
+    path("signup/", signup, name="signup"),
+    
+    path("media/<path:path>", serve, {"document_root": settings.MEDIA_ROOT}),
 ]

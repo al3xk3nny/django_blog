@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load bootstrap_tags %}
 
 {% block content %}
 
@@ -8,7 +9,7 @@
         
         {% csrf_token %} 
         
-        {{ form.as_p }}
+        {{ form | as_bootstrap }}
     
         <p><a href="{% url 'password_reset' %}">Forgot my password</a></p>
     
