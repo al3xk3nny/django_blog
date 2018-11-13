@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-2 col-sm-3 text-center">
             <a class="story-img" href="#">
-                <img src="#" class="img-circle">
+                <img src="{{ MEDIA_URL }}{{ post.author.profile.image }}" class="img-circle">
             </a>
             <p><span class="boldtext">Author:</span> {{ post.author.username }}</p>
         </div>
@@ -23,7 +23,14 @@
                     <p><span class="boldtext">Tag:</span> history</p>
 
                     <a href="{% url 'index' %}" class="btn btn-default">Back to Blog</a>
-                    <a href="{% url 'edit_post' post.id %}" class="btn btn-default">Edit Post</a>
+                    
+                    {% if can_edit %}
+                        <a href="{% url 'edit_post' post.id %}" class="btn btn-default">Edit Post</a>
+                    {% endif %}
+                    
+                    {% if can_publish %}
+                        <a href="#" class="btn btn-default">Publish Post</a>
+                    {% endif %}
 
                 </div>
             </div>

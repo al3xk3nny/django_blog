@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.views.static import serve
 from django.conf import settings
 
-from blog.views import get_index, write_post, read_post, edit_post
+from blog.views import get_index, write_post, read_post, edit_post, publish_post, get_unpublished_posts
 from accounts.views import signup
 
 
@@ -27,9 +27,11 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     
     path("", get_index, name="index"),
+    path('posts/unpublished', get_unpublished_posts, name='get_unpublished_posts'),
     path("write_post/", write_post, name="write_post"),
     path("read_post/<int:id>/", read_post, name="read_post"),
     path("edit_post/<int:id>/", edit_post, name="edit_post"),
+    path('posts/<int:id>/publish/', publish_post, name='edit_post'),
     
     path("signup/", signup, name="signup"),
     

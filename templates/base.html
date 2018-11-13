@@ -1,4 +1,5 @@
 {% load static from staticfiles %}
+{% load auth_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +39,9 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'write_post' %}"><i class="fa fa-plus"></i> New Post</a></li>
+                        {% if request.user|has_group:"authors" %} 
+                            <li><a href="{% url 'write_post' %}"><i class="fa fa-plus"></i> New Post</a></li>
+                        {% endif %}    
                     <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
                     {% else %}
                     <li><a href="{% url 'signup' %}"><i class="fa fa-user-plus"></i> Register</a></li>
