@@ -6,11 +6,15 @@ from .forms import SignUpForm, ProfileForm
 
 def signup(request):
     if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get("username")
-            raw_password = form.cleaned_data.get("password1")
+        user_form = SignUpForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user # Set the user value in the profile table to the user value in the user table - i.e. one to one relationship.
+            profile.save() # We have already saved the user detail to the database so we now need the profile detail.
+            username = user_form.cleaned_data.get("username")
+            raw_password = user_form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect("index")
